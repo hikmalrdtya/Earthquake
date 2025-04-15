@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earthquake Detector</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assests/house-chimney-crack-solid.svg">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+
+    <!-- <div class="overlay">
+        <div class="popup">
+            <h2>Login Here</h2>
+            <input type="text" id="username" placeholder="Input username" autocomplete="off">
+            <input type="password" id="password" placeholder="Input password" autocomplete="off">
+            <button id="loginBtn">Login</button>
+            <p class="error" id="errorMsg" style="display: none;">Username or Password Invalid</p>
+        </div>
+    </div> -->
+
+    <header>
+        <h1>Seismo<span>Track</span></h1>
+    </header>
+
+    <main>
+        <nav>
+            <ul>
+                <li><a id="home" class="active" href="#">Home</a></li>
+                <li><a id="graph" href="#">Graph</a></li>
+                <li><a id="location" href="#">Location</a></li>
+                <li><a id="history" href="#">Recap</a></li>
+                <li><a id="safety" href="#">Safety Tips</a></li>
+                <li><a id="settings" href="#">Settings</a></li>
+                <!--   <h1 id="welcomeMsg"></h1>-->
+            </ul>
+        </nav>
+
+        <div class="content">
+            <!-- Home content -->
+            <div class="home-content">
+                <h2>Selamat Datang Di Earthquake Detector</h2>
+                <p>Website ini menyediakan informasi real-time mengenai aktivitas seismik yangg terdeteksi oleh alat
+                    kami.</p>
+
+                <div class="datetime-box">
+                    <h2 id="monthYear"></h2>
+                    <h3 id="day"></h3>
+                    <div id="time" class="clock"></div>
+
+                    <div class="data-grid">
+                        <div class="data-card">
+                            <img src="https://img.icons8.com/ios/50/000000/partly-cloudy-day--v1.png" alt="temperature">
+                            <h4>Temperature</h4>
+                            <span>30°C</span>
+                        </div>
+
+                        <div class="data-card">
+                            <img src="https://img.icons8.com/ios/50/000000/hygrometer.png" alt="humidity">
+                            <h4>Humidity</h4>
+                            <span>100%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-carousel">
+                    <div class="news-track">
+                        <div class="news-item">🌍 Selamat Datang Di Earthquake Detector</div>
+                        <div class="news-item">⚠️ Website ini menyediakan informasi real-time mengenai aktivitas seismik yangg terdeteksi oleh alat
+                            kami</div>
+                        <div class="news-item">📊 Data sensor terbaru menunjukkan aktivitas meningkat.</div>
+                        <div class="news-item">🔔 Waspadai gempa susulan dalam 24 jam ke depan.</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Home content end -->
+
+            <!-- Graph content -->
+            <div class="graph-content hide">
+                <h2>Grafik Data Sensor Getaran Real-Time</h2>
+                <canvas id="chart1"></canvas>
+
+                <h2>Grafik Data Sensor Suhu Real-Time</h2>
+                <canvas id="chart2"></canvas>
+
+                <h2>Grafik Data Sensor Kelembapan Real-Time</h2>
+                <canvas id="chart3"></canvas>
+            </div>
+            <!-- Graph content end -->
+
+            <!-- Location content -->
+            <div class="location-content hide">
+                <h2>Your Location</h1>
+                    <!-- <p id="location-text"></p> -->
+                    <p id="info">Getting your location...</p>
+                    <button id="checkLocation">Check Your Location</button>
+                    <div id="map"></div>
+            </div>
+            <!-- Location content end -->
+
+            <!-- History -->
+            <div class="historical-content hide">
+                <h2>Recap Data</h2>
+                <p>Riwayat Data Gempa Yang Telah Terkumpul</p>
+            </div>
+            <!-- History end -->
+
+            <!-- Safety Tips -->
+            <div class="safety-content hide">
+                <h2>Safety Tips</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris.</p>
+
+                <div class="news">
+                    <div class="slider-wrapper">
+                        <div class="slider">
+                            <img id="slide-1" src="assests/pordas_fc-removebg-preview.png">
+                            <img id="slide-2" src="assests/pssii.png">
+                            <img id="slide-3" src="assests/contoh website pribadi.jpg">
+                        </div>
+                        <div class="slider-nav">
+                            <a href="#slide-1"></a>
+                            <a href="#slide-2"></a>
+                            <a href="#slide-3"></a>
+                        </div>
+                    </div>
+                    <!--  <h4>Breaking News</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
+                </div>
+            </div>
+            <!-- Safety Tips end -->
+
+            <!-- Settings -->
+            <div class="settings-content hide">
+                <h2>Settings</h2>
+                <div class="wrapper">
+                    <div class="item account">
+                        <h4>Account Settings</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt </p>
+                    </div>
+                    <div class="item info-1">
+                        <h4>Info 1</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt </p>
+                    </div>
+                    <div class="item info-2">
+                        <h4>Info 2</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt </p>
+                    </div>
+                </div>
+                <button id="logout" class="logout-btn">Logout</button>
+            </div>
+            <!-- Settings end -->
+        </div>
+    </main>
+
+    <script src="script/script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAV0QLkwkneaAyn9ViWacTXH9Z3y4L2r1k&callback=initMap"
+        async defer></script>
+</body>
+
+</html>

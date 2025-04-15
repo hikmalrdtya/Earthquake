@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SeismoTrack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f6f8fc;
+            color: #222;
+        }
+
+        header {
+            background-image: url('bg-header.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 999px;
+            color: #000;
+            background-color: transparent;
+            transition: all 0.3s;
+        }
+
+        nav a.active,
+        nav a:hover {
+            background-color: #111;
+            color: white;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .datetime-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .datetime-box h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .datetime-box h3 {
+            font-weight: 400;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .clock {
+            font-size: 48px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .data-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .data-card {
+            background: white;
+            width: 200px;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .data-card img {
+            width: 50px;
+            margin-bottom: 10px;
+        }
+
+        .data-card h4 {
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .data-card span {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .news-carousel {
+            overflow: hidden;
+            width: 100%;
+            background-color: #222;
+            color: white;
+            padding: 10px 0;
+            position: relative;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .news-track {
+            display: flex;
+            animation: scrollNews 20s linear infinite;
+            gap: 50px;
+        }
+
+        .news-item {
+            min-width: max-content;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+
+        @keyframes scrollNews {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Seismo<span style="color: #4db5ff;">Track</span></h1>
+    </header>
+
+    <nav>
+        <a class="active" href="#">Home</a>
+        <a href="#">Graph</a>
+        <a href="#">Location</a>
+        <a href="#">Recap</a>
+        <a href="#">Safety Tips</a>
+        <a href="#">Settings</a>
+    </nav>
+
+    <div class="container">
+        <div class="welcome">
+            <h2>Selamat Datang Di Earthquake Detector</h2>
+            <p>Website ini menyediakan informasi real-time mengenai aktivitas seismik yang terdeteksi oleh alat kami.
+            </p>
+        </div>
+
+        <div class="datetime-box">
+            <h2>April 2025</h2>
+            <h3>Minggu, 13</h3>
+            <div class="clock">12:44:10</div>
+
+            <div class="data-grid">
+                <div class="data-card">
+                    <img src="https://img.icons8.com/ios/50/000000/partly-cloudy-day--v1.png" alt="temperature">
+                    <h4>Temperature</h4>
+                    <span>30°C</span>
+                </div>
+
+                <div class="data-card">
+                    <img src="https://img.icons8.com/ios/50/000000/hygrometer.png" alt="humidity">
+                    <h4>Humidity</h4>
+                    <span>100%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="news-carousel">
+            <div class="news-track">
+                <div class="news-item">🌍 Gempa bumi terjadi di wilayah timur Indonesia hari ini.</div>
+                <div class="news-item">⚠️ Peringatan dini tsunami dikeluarkan oleh BMKG.</div>
+                <div class="news-item">📊 Data sensor terbaru menunjukkan aktivitas meningkat.</div>
+                <div class="news-item">🔔 Waspadai gempa susulan dalam 24 jam ke depan.</div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

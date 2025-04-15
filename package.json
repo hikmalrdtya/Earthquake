@@ -1,0 +1,22 @@
+{
+  "name": "web-iot",
+  "version": "1.0.0",
+  "main": "jquery-3.7.1.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "mqtt": "^5.10.3",
+    "mysql2": "^3.14.0",
+    "socket.io": "^4.8.1"
+  }
+}
