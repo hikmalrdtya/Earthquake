@@ -5,6 +5,7 @@ const mqtt = require('mqtt');
 const http = require('http');
 const mysql = require('mysql2/promise');
 const { Server } = require('socket.io');
+const PDFDocument = require('pdfkit');
 
 const app = express();
 const server = http.createServer(app);
@@ -89,9 +90,61 @@ app.get('/sensor-history', async (req, res) => {
     }
 });
 
-// WebSocket (opsional)
-io.on('connection', (socket) => {
-    console.log('Client WebSocket terhubung');
+// Rekap PDF
+app.get('/rekap-pdf', async (req, res) => {
+    try {
+        // Ambil parameter date dari URL
+        const requestedDate = req.query.date || new Date().toISOString().slice(0, 10); // default: hari ini
+        const startTime = `${requestedDate} 00:00:00`;
+        const endTime = `${requestedDate} 23:59:59`;
+
+        const [rows] = await db.query(
+            "SELECT * FROM sensor_data WHERE created_at BETWEEN ? AND ? ORDER BY created_at ASC",
+            [startTime, endTime]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).send('Tidak ada data untuk tanggal tersebut');
+        }
+
+        const doc = new PDFDocument();
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="rekap-data-sensor-${requestedDate}.pdf"`);
+        doc.pipe(res);
+
+        doc.fontSize(20).text(`Rekap Data Sensor - ${requestedDate}`, { align: 'center' });
+        doc.moveDown();
+
+        // Header tabel
+        doc.fontSize(12);
+        doc.text('No', 50, doc.y);
+        doc.text('Tanggal', 100, doc.y);
+        doc.text('Suhu (°C)', 200, doc.y);
+        doc.text('Kelembapan (%)', 300, doc.y);
+        doc.text('Akselerasi', 420, doc.y);
+        doc.moveDown();
+
+        // Data tabel
+        rows.forEach((row, index) => {
+            const acc = Math.sqrt(
+                Math.pow(row.accelX || 0, 2) +
+                Math.pow(row.accelY || 0, 2) +
+                Math.pow(row.accelZ || 0, 2)
+            ).toFixed(2);
+
+            doc.text(index + 1, 50, doc.y);
+            doc.text(new Date(row.created_at).toLocaleString(), 100, doc.y);
+            doc.text(row.temperature, 200, doc.y);
+            doc.text(row.humidity, 300, doc.y);
+            doc.text(acc, 420, doc.y);
+            doc.moveDown();
+        });
+
+        doc.end();
+    } catch (err) {
+        console.error('Gagal membuat PDF:', err);
+        res.status(500).send('Gagal membuat PDF');
+    }
 });
 
 // Jalankan server

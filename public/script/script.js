@@ -350,4 +350,12 @@ $(document).ready(function () {
     });
 });
 
-
+// PDF Dwonload
+document.getElementById('btnDownloadRekap').addEventListener('click', function () {
+    const date = document.getElementById('rekapDate').value;
+    if (date) {
+        window.location.href = `/rekap-pdf?date=${date}`;
+    } else {
+        window.location.href = `/rekap-pdf`; // default hari ini
+    }
+});
