@@ -63,17 +63,29 @@ const chartOptions = {
             data: [],
             borderColor: 'blue',
             borderWidth: 2,
-            fill: false
+            fill: false,
+            tension: 0.4 // <-- Membuat garis jadi melengkung halus
         }]
     },
     options: {
-        animation: false,
+        animation: {
+            duration: 1000, // Durasi animasi 800ms
+            easing: 'easeOutQuart' // Efek animasi halus
+        },
         scales: {
-            x: { display: false },
+            x: { display: true },
             y: { beginAtZero: true }
-        }
+        },
+        plugins: {
+            legend: {
+                display: true
+            }
+        },
+        responsive: true,
+        maintainAspectRatio: false
     }
 };
+
 
 const ctx1 = document.getElementById('chart1').getContext('2d');
 const chart1 = new Chart(ctx1, structuredClone(chartOptions));
