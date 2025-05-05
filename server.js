@@ -6,6 +6,7 @@ const http = require('http');
 const mysql = require('mysql2/promise');
 const { Server } = require('socket.io');
 const PDFDocument = require('pdfkit');
+const { Table } = require('pdfkit-table');
 
 const app = express();
 const server = http.createServer(app);
@@ -93,59 +94,49 @@ app.get('/sensor-history', async (req, res) => {
 // Rekap PDF
 app.get('/rekap-pdf', async (req, res) => {
     try {
-        // Ambil parameter date dari URL
-        const requestedDate = req.query.date || new Date().toISOString().slice(0, 10); // default: hari ini
-        const startTime = `${requestedDate} 00:00:00`;
-        const endTime = `${requestedDate} 23:59:59`;
-
+        const date = req.query.date || new Date().toISOString().slice(0, 10);
         const [rows] = await db.query(
-            "SELECT * FROM sensor_data WHERE created_at BETWEEN ? AND ? ORDER BY created_at ASC",
-            [startTime, endTime]
+            "SELECT * FROM sensor_data WHERE DATE(created_at) = ? ORDER BY created_at ASC", [date]
         );
 
-        if (rows.length === 0) {
-            return res.status(404).send('Tidak ada data untuk tanggal tersebut');
-        }
+        const doc = new PDFDocument({ margin: 30, size: 'A4' });
 
-        const doc = new PDFDocument();
+        // Atur response headers supaya langsung download
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename="rekap-data-sensor-${requestedDate}.pdf"`);
+        res.setHeader('Content-Disposition', `attachment; filename=rekap_sensor_${date}.pdf`);
         doc.pipe(res);
 
-        doc.fontSize(20).text(`Rekap Data Sensor - ${requestedDate}`, { align: 'center' });
+        doc.fontSize(16).text(`Rekap Data Sensor - ${date}`, { align: 'center' });
         doc.moveDown();
 
-        // Header tabel
-        doc.fontSize(12);
-        doc.text('No', 50, doc.y);
-        doc.text('Tanggal', 100, doc.y);
-        doc.text('Suhu (°C)', 200, doc.y);
-        doc.text('Kelembapan (%)', 300, doc.y);
-        doc.text('Akselerasi', 420, doc.y);
-        doc.moveDown();
+        // Format tabel
+        const table = {
+            headers: [
+                { label: "No", width: 40 },
+                { label: "Waktu", width: 130 },
+                { label: "Suhu (°C)", width: 80 },
+                { label: "Kelembapan (%)", width: 100 },
+                { label: "Akselerasi (X,Y,Z)", width: 160 }
+            ],
+            rows: rows.map((row, index) => [
+                index + 1,
+                row.created_at.toLocaleString(),
+                row.temperature,
+                row.humidity,
+                `${row.accelX}, ${row.accelY}, ${row.accelZ}`
+            ])
+        };
 
-        // Data tabel
-        rows.forEach((row, index) => {
-            const acc = Math.sqrt(
-                Math.pow(row.accelX || 0, 2) +
-                Math.pow(row.accelY || 0, 2) +
-                Math.pow(row.accelZ || 0, 2)
-            ).toFixed(2);
-
-            doc.text(index + 1, 50, doc.y);
-            doc.text(new Date(row.created_at).toLocaleString(), 100, doc.y);
-            doc.text(row.temperature, 200, doc.y);
-            doc.text(row.humidity, 300, doc.y);
-            doc.text(acc, 420, doc.y);
-            doc.moveDown();
-        });
+        // Buat tabel
+        await doc.table(table, { prepareHeader: () => doc.fontSize(10), prepareRow: () => doc.fontSize(10) });
 
         doc.end();
     } catch (err) {
-        console.error('Gagal membuat PDF:', err);
-        res.status(500).send('Gagal membuat PDF');
+        console.error("Gagal buat PDF:", err);
+        res.status(500).send("Terjadi kesalahan saat membuat PDF.");
     }
 });
+
 
 // Jalankan server
 server.listen(PORT, () => {
