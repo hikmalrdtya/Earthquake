@@ -36,8 +36,7 @@ const contents = {
     graph: document.querySelector('.graph-content'),
     location: document.querySelector('.location-content'),
     history: document.querySelector('.historical-content'),
-    safety: document.querySelector('.safety-content'),
-    settings: document.querySelector('.settings-content')
+    safety: document.querySelector('.safety-content')
 };
 
 tabs.forEach(tab => {
@@ -49,8 +48,42 @@ tabs.forEach(tab => {
 
         contents[tab.id].classList.remove('hide');
         contents[tab.id].classList.add('display');
+
+        if (tab.id === 'history') {
+            loadRekapData(); // Panggil fungsi untuk memuat data rekap
+        }
     })
 })
+
+// Rekap Data
+function loadRekapData() {
+    fetch('/sensor-history')
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const tbody = document.querySelector('#rekapTable tbody');
+                tbody.innerHTML = ''; // kosongkan dulu
+
+                data.data.forEach((item, index) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${new Date(item.created_at).toLocaleString()}</td>
+                        <td>${item.temperature}</td>
+                        <td>${item.humidity}</td>
+                        <td>${item.accelX}, ${item.accelY}, ${item.accelZ}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                alert("Gagal ambil data rekap!");
+            }
+        })
+        .catch(err => {
+            console.error("Error ambil data:", err);
+        });
+}
+
 
 // Grafik
 // Grafik Getaran

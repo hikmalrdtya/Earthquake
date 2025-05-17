@@ -41,7 +41,6 @@
                 <li><a id="location" href="#">Location</a></li>
                 <li><a id="history" href="#">Recap</a></li>
                 <li><a id="safety" href="#">Safety Tips</a></li>
-                <li><a id="settings" href="#">Settings</a></li>
                 <!--   <h1 id="welcomeMsg"></h1>-->
             </ul>
         </nav>
@@ -76,7 +75,8 @@
                 <div class="news-carousel">
                     <div class="news-track">
                         <div class="news-item">🌍 Selamat Datang Di Earthquake Detector</div>
-                        <div class="news-item">⚠️ Website ini menyediakan informasi real-time mengenai aktivitas seismik yangg terdeteksi oleh alat
+                        <div class="news-item">⚠️ Website ini menyediakan informasi real-time mengenai aktivitas seismik
+                            yangg terdeteksi oleh alat
                             kami</div>
                         <div class="news-item">📊 Data sensor terbaru menunjukkan aktivitas meningkat.</div>
                         <div class="news-item">🔔 Waspadai gempa susulan dalam 24 jam ke depan.</div>
@@ -93,24 +93,25 @@
                             <div class="inner">
                                 <div class="slide slide_1">
                                     <div class="slide-content">
-                                        <a href="https://www.bmkg.go.id/berita/utama/belajar-dari-cuaca-ekstrem-bmkg-soroti-tantangan-dan-solusi-mitigasi-bencana">
-                                            
+                                        <a
+                                            href="https://www.bmkg.go.id/berita/utama/belajar-dari-cuaca-ekstrem-bmkg-soroti-tantangan-dan-solusi-mitigasi-bencana">
+
                                         </a>
                                     </div>
                                 </div>
                                 <div class="slide slide_2">
                                     <div class="slide-content">
-                                        
+
                                     </div>
                                 </div>
                                 <div class="slide slide_3">
                                     <div class="slide-content">
-                                        
+
                                     </div>
                                 </div>
                                 <div class="slide slide_4">
                                     <div class="slide-content">
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -160,68 +161,76 @@
                 <h2>Recap Data</h2>
                 <p>Riwayat Data Gempa Yang Telah Terkumpul</p>
                 <div class="rekap-content">
-                    <h2>Rekap Data Sensor</h2>
                     <input type="date" id="rekapDate">
-                    <button id="btnDownloadRekap" class="btn-download"><p>Dwonload Rekap PDF</p></button>
-                </div>                
+                    <button id="btnDownloadRekap" class="btn-download">
+                        <p>Download Rekap PDF</p>
+                    </button>
+                </div>
+
+                <!-- Tempat tampilkan data -->
+                <div class="rekap-table-container">
+                    <table id="rekapTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Waktu</th>
+                                <th>Suhu (°C)</th>
+                                <th>Kelembapan (%)</th>
+                                <th>Akselerasi (X,Y,Z)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data dari server akan ditambahkan di sini -->
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
             <!-- History end -->
 
             <!-- Safety Tips -->
             <div class="safety-content hide">
                 <h2>Safety Tips</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris.</p>
+                <p>Berikut adalah beberapa tips keselamatan yang penting saat terjadi gempa bumi:</p>
+                <div class="item-tips">
+                    <div class="item">Berlindung di tempat aman: Segera berlindung di bawah meja yang kokoh atau perabot
+                        lain untuk melindungi diri dari benda jatuh.</div>
+                    <div class="item">Jauhi jendela dan benda berat: Hindari berada di dekat kaca, lemari, atau benda
+                        yang bisa jatuh dan melukai.</div>
+                    <div class="item">Jangan panik: Tetap tenang dan ikuti prosedur evakuasi jika diperlukan.</div>
+                    <div class="item">Matikan listrik dan gas: Jika memungkinkan, matikan sumber listrik dan gas untuk
+                        mencegah kebakaran.</div>
+                    <div class="item">Setelah gempa: Periksa kondisi diri dan orang sekitar, serta cari informasi dari
+                        sumber resmi terkait potensi gempa susulan.</div>
+                </div>
+
 
                 <div class="news">
-                    <div class="slider-wrapper">
-                        <div class="slider">
-                            <img id="slide-1" src="assests/pordas_fc-removebg-preview.png">
-                            <img id="slide-2" src="assests/pssii.png">
-                            <img id="slide-3" src="assests/contoh website pribadi.jpg">
-                        </div>
-                        <div class="slider-nav">
-                            <a href="#slide-1"></a>
-                            <a href="#slide-2"></a>
-                            <a href="#slide-3"></a>
-                        </div>
-                    </div>
-                    <!--  <h4>Breaking News</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
-                </div>
-            </div>
-            <!-- Safety Tips end -->
+                    <h2>News</h2>
+                    <div class="news-item">
+                        <a href="https://umj.ac.id/opini-1/ahli-k3-umj-bagikan-tips-penyelamatan-diri-saat-gempa-bumi/">
+                            <h3>Universitas Muhammadiyah Jakarta:</h3>
+                            <p>Ahli K3 UMJ Bagikan Tips Penyelamatan Diri Saat Gempa Bumi</p>
+                        </a>
 
-            <!-- Settings -->
-            <div class="settings-content hide">
-                <h2>Settings</h2>
-                <div class="wrapper">
-                    <div class="item account">
-                        <h4>Account Settings</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt </p>
-                    </div>
-                    <div class="item info-1">
-                        <h4>Info 1</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt </p>
-                    </div>
-                    <div class="item info-2">
-                        <h4>Info 2</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt </p>
+                        <a
+                            href="https://baznas.go.id/artikel-show/Tips-Penting-untuk-Melindungi-Diri-dari-Ancaman-Gempa-Megathrust/602">
+                            <h3>BAZNAS:</h3>
+                            <p>Tips Penting untuk Melindungi Diri dari Ancaman Gempa Megathrust</p>
+                        </a>
+
+                        <a
+                            href="https://www.tempo.co/arsip/apa-yang-harus-dilakukan-ketika-berkendara-dan-mendadak-ada-gempa--14453">
+                            <h3>Tempo:</h3>
+                            <p>Apa yang Harus Dilakukan Ketika Berkendara dan Mendadak Ada Gempa?</p>
+                        </a>
+
                     </div>
                 </div>
-                <button id="logout" class="logout-btn">Logout</button>
+                <!-- Safety Tips end -->
+
+
             </div>
-            <!-- Settings end -->
-        </div>
     </main>
 
     <script src="script/script.js"></script>
