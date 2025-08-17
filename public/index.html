@@ -172,14 +172,20 @@
 
         <!-- Graph content -->
         <div class="graph-content">
-          <h2>Grafik Data Sensor Getaran Real-Time</h2>
-          <canvas id="chart1"></canvas>
+          <div class="hero-graph">
+            <h2>Grafik Data Sensor Getaran Real-Time</h2>
+            <canvas id="chart1"></canvas>
+          </div>
 
-          <h2>Grafik Data Sensor Suhu Real-Time</h2>
-          <canvas id="chart2"></canvas>
+          <div class="hero-graph">
+            <h2>Grafik Data Sensor Suhu Real-Time</h2>
+            <canvas id="chart2"></canvas>
+          </div>
 
-          <h2>Grafik Data Sensor Kelembapan Real-Time</h2>
-          <canvas id="chart3"></canvas>
+          <div class="hero-graph">
+            <h2>Grafik Data Sensor Kelembapan Real-Time</h2>
+            <canvas id="chart3"></canvas>
+          </div>
         </div>
         <!-- Graph content end -->
 
@@ -216,69 +222,73 @@
 
         <!-- Safety Tips -->
         <div class="safety-content">
-          <h2>Safety Tips</h2>
+          <h2 style="margin-bottom: .5em;">Panduan Kesiapsiagaan Gempa Bumi</h2>
           <p>
-            Berikut adalah beberapa tips keselamatan yang penting saat terjadi
-            gempa bumi:
+            Langkah-langkah penting untuk melindungi diri Anda dan keluarga.
           </p>
-          <div class="item-tips">
-            <div class="item">
-              Berlindung di tempat aman: Segera berlindung di bawah meja yang
-              kokoh atau perabot lain untuk melindungi diri dari benda jatuh.
-            </div>
-            <div class="item">
-              Jauhi jendela dan benda berat: Hindari berada di dekat kaca,
-              lemari, atau benda yang bisa jatuh dan melukai.
-            </div>
-            <div class="item">
-              Jangan panik: Tetap tenang dan ikuti prosedur evakuasi jika
-              diperlukan.
-            </div>
-            <div class="item">
-              Matikan listrik dan gas: Jika memungkinkan, matikan sumber listrik
-              dan gas untuk mencegah kebakaran.
-            </div>
-            <div class="item">
-              Setelah gempa: Periksa kondisi diri dan orang sekitar, serta cari
-              informasi dari sumber resmi terkait potensi gempa susulan.
+
+          <div class="download-button" id="btnDownloadSafetyTips">
+            <button> Download Dokumen (PDF)</button>
+          </div>
+
+          <div class="prepare">
+            <h3>Sebelum Gempa (Kesiapsiagaan)</h3>
+            <p>Persiapan adalah kunci utama keselamatan. Lakukan langkah-langkah berikut sebelum gempa terjadi.</p>
+            <div class="hero-card-prepare">
+              <div class="card-prepare">
+                <h4>Siapkan Tas Siaga Bencana</h4>
+                <p>Siapkan tas berisi P3K, makanan instan, air minum, senter, baterai, peluit, dan dokumen penting di tempat yang mudah dijangkau.</p>
+              </div>
+              <div class="card-prepare">
+                <h4>Amankan Perabotan Berat</h4>
+                <p>Kencangkan lemari, rak buku, dan pigura ke dinding. Letakkan benda berat dan mudah pecah di bagian paling bawah.</p>
+              </div>
+              <div class="card-prepare">
+                <h4>Ketahui Jalur Evakuasi</h4>
+                <p>Kenali jalur evakuasi di rumah, kantor, atau sekolah. Tentukan titik kumpul yang aman bersama anggota keluarga Anda.</p>
+              </div>
+              <div class="card-prepare">
+                <h4>Kenali Struktur Bangunan</h4>
+                <p>Ketahui tempat-tempat paling aman di dalam rumah Anda, seperti di bawah meja yang kokoh atau di sudut ruangan yang struktural.</p>
+              </div>
             </div>
           </div>
 
-          <div class="news">
-            <h2>News</h2>
-            <div class="news-item">
-              <a
-                href="https://umj.ac.id/opini-1/ahli-k3-umj-bagikan-tips-penyelamatan-diri-saat-gempa-bumi/"
-              >
-                <h3>Universitas Muhammadiyah Jakarta:</h3>
-                <p>
-                  Ahli K3 UMJ Bagikan Tips Penyelamatan Diri Saat Gempa Bumi
-                </p>
-              </a>
-
-              <a
-                href="https://baznas.go.id/artikel-show/Tips-Penting-untuk-Melindungi-Diri-dari-Ancaman-Gempa-Megathrust/602"
-              >
-                <h3>BAZNAS:</h3>
-                <p>
-                  Tips Penting untuk Melindungi Diri dari Ancaman Gempa
-                  Megathrust
-                </p>
-              </a>
-
-              <a
-                href="https://www.tempo.co/arsip/apa-yang-harus-dilakukan-ketika-berkendara-dan-mendadak-ada-gempa--14453"
-              >
-                <h3>Tempo:</h3>
-                <p>
-                  Apa yang Harus Dilakukan Ketika Berkendara dan Mendadak Ada
-                  Gempa?
-                </p>
-              </a>
+          <div class="prepare">
+            <h3>Saat Gempa (Tindakan Cepat)</h3>
+            <p>Tetap tenang dan segera lakukan metode "Merunduk, Berlindung, dan Bertahan".</p>
+            <div class="hero-card-gempa">
+              <div class="card-gempa">
+                <h4>Merunduk, Berlindung, dan Bertahan</h4>
+                <p>Segera merunduk ke lantai, cari perlindungan di bawah meja yang kuat, dan berpegangan erat pada kaki meja hingga guncangan berhenti.</p>
+                <iframe 
+                  width="300" 
+                  height="200" 
+                  src="https://www.youtube.com/embed/98vTIfCeBac" 
+                  title="YouTube video player" 
+                  frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                  referrerpolicy="strict-origin-when-cross-origin" 
+                  allowfullscreen>
+                </iframe>
+              </div>
             </div>
           </div>
-          <!-- Safety Tips end -->
-        </div>
+          
+          <div class="prepare">
+            <h3>Setelah Gempa (Evaluasi & Pemulihan)</h3>
+            <p>Tetap waspada terhadap gempa susulan dan periksa potensi bahaya di sekitar Anda.</p>
+            <div class="hero-card-prepare">
+              <div class="card-prepare">
+                <h4>Periksa Kondisi Diri & Sekitar</h4>
+                <p>Pastikan diri Anda dan keluarga tidak ada yang terluka. Berikan pertolongan pertama jika perlu dan jangan memindahkan korban yang terluka parah.</p>
+              </div>
+              <div class="card-prepare">
+                <h4>Waspadai Bahaya Sekunder</h4>
+                <p>Periksa kebocoran gas, kerusakan listrik, dan saluran air. Jika tercium bau gas, segera keluar dan jangan menyalakan api atau listrik.</p>
+              </div>
+            </div>
+          </div>
       </div>
     </main>
 

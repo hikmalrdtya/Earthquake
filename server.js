@@ -24,39 +24,13 @@ const db = mysql.createPool({
 // Middleware
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // penting untuk parsing JSON POST
+app.use(express.json());
 app.use(cookieParser());
 
-// Dummy login
-const validUsername = "admin";
-const validPass = "123";
-
-// === Endpoint Web ===
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
-app.get('/check-login', (req, res) => {
-    res.json({ loggedIn: !!req.cookies.username, username: req.cookies.username || null });
-});
-
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    if (username === validUsername && password === validPass) {
-        res.cookie('username', username, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true });
-        res.json({ success: true, username });
-    } else {
-        res.json({ success: false, message: "Username atau password salah!" });
-    }
-});
-
-app.get('/logout', (req, res) => {
-    res.clearCookie('username');
-    res.json({ success: true });
-});
-
-// === Endpoint POST dari ESP32 ===
-// Endpoint untuk menerima data dari ESP32 via HTTP POST
 app.post('/api/sensor', async (req, res) => {
     const { temperature, humidity, accelX, accelY, accelZ } = req.body;
 
@@ -72,7 +46,7 @@ app.post('/api/sensor', async (req, res) => {
         console.log('Data berhasil disimpan ke database');
 
         const sensorData = { temperature, humidity, accelX, accelY, accelZ };
-        io.emit('sensorUpdate', sensorData); // Optional kalau kamu tetap mau pakai realtime juga
+        io.emit('sensorUpdate', sensorData);
         res.json({ success: true, message: "Data berhasil disimpan!" });
     } catch (err) {
         console.error('Gagal menyimpan data ke database:', err);
@@ -80,14 +54,72 @@ app.post('/api/sensor', async (req, res) => {
     }
 });
 
-// Endpoint untuk ambil 20 data terakhir untuk grafik (misalnya real-time fetch per 5 detik)
 app.get('/sensor-history', async (req, res) => {
     try {
-        const [rows] = await db.query("SELECT * FROM sensor_data ORDER BY created_at DESC LIMIT 20");
-        res.json({ success: true, data: rows.reverse() }); // dibalik agar dari lama ke baru
+        const date = req.query.date;
+
+        if (date) {
+            const [rows] = await db.query(
+                "SELECT * FROM sensor_data WHERE DATE(created_at) = ? ORDER BY created_at DESC", 
+                [date]
+            );
+            res.json({ success: true, data: rows });
+
+        } else {
+            const [rows] = await db.query("SELECT * FROM sensor_data ORDER BY created_at DESC LIMIT 20");
+            res.json({ success: true, data: rows.reverse() });
+        }
+
     } catch (err) {
         console.error('Gagal ambil data:', err);
         res.status(500).json({ success: false, message: 'Gagal ambil data dari database' });
+    }
+});
+
+// PDF Safety Tips
+app.get('/download-safety-tips', (req, res) => {
+    try {
+        const doc = new PDFDocument({ margin: 50, size: 'A4' });
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename=Panduan_Keselamatan_Gempa.pdf');
+
+        doc.pipe(res);
+
+        doc.fontSize(20).font('Helvetica-Bold').text('Panduan Keselamatan Gempa Bumi', { align: 'center' });
+        doc.moveDown(2);
+
+        doc.fontSize(16).font('Helvetica-Bold').text('SEBELUM GEMPA (Kesiapsiagaan)', { underline: true });
+        doc.moveDown();
+        doc.fontSize(12).font('Helvetica').list([
+            'Siapkan Tas Siaga Bencana berisi P3K, makanan, air, senter, baterai, peluit, dll.',
+            'Amankan perabotan berat (lemari, rak buku) dengan mengencangkannya ke dinding.',
+            'Ketahui jalur evakuasi dan tentukan titik kumpul yang aman bersama keluarga.'
+        ], { bulletRadius: 2, textIndent: 10 });
+        doc.moveDown();
+
+        doc.fontSize(16).font('Helvetica-Bold').text('SAAT GEMPA (Tindakan Cepat)', { underline: true });
+        doc.moveDown();
+        doc.fontSize(12).font('Helvetica').list([
+            'Terapkan metode "Merunduk, Berlindung, dan Bertahan (Drop, Cover, and Hold On)". Segera berlindung di bawah meja yang kokoh.',
+            'Jauhi jendela, kaca, cermin, dan benda-benda yang mudah jatuh.',
+            'Jangan panik. Tetap tenang dan ikuti prosedur evakuasi jika diperlukan.'
+        ], { bulletRadius: 2, textIndent: 10 });
+        doc.moveDown();
+        
+        doc.fontSize(16).font('Helvetica-Bold').text('SETELAH GEMPA (Evaluasi & Pemulihan)', { underline: true });
+        doc.moveDown();
+        doc.fontSize(12).font('Helvetica').list([
+            'Periksa kondisi diri dan orang di sekitar Anda dari cedera.',
+            'Jika aman, matikan listrik dan gas untuk mencegah bahaya kebakaran.',
+            'Dengarkan informasi resmi dari sumber terpercaya (BMKG, BNPB) mengenai potensi gempa susulan.'
+        ], { bulletRadius: 2, textIndent: 10 });
+
+        doc.end();
+
+    } catch (err) {
+        console.error("Gagal membuat PDF Safety Tips:", err);
+        res.status(500).send("Gagal membuat dokumen PDF.");
     }
 });
 
@@ -101,7 +133,6 @@ app.get('/rekap-pdf', async (req, res) => {
 
         const doc = new PDFDocument({ margin: 30, size: 'A4' });
 
-        // Atur response headers supaya langsung download
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename=rekap_sensor_${date}.pdf`);
         doc.pipe(res);
@@ -127,7 +158,6 @@ app.get('/rekap-pdf', async (req, res) => {
             ])
         };
 
-        // Buat tabel
         await doc.table(table, { prepareHeader: () => doc.fontSize(10), prepareRow: () => doc.fontSize(10) });
 
         doc.end();
