@@ -1,241 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Earthquake Detector</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
-        rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="assests/house-chimney-crack-solid.svg">
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="assests/house-chimney-crack-solid.svg"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="script/jquery-3.7.1.min.js"></script>
-</head>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+  </head>
 
-<body>
-
-    <!-- <div class="overlay">
-        <div class="popup">
-            <h2>Login Here</h2>
-            <input type="text" id="username" placeholder="Input username" autocomplete="off">
-            <input type="password" id="password" placeholder="Input password" autocomplete="off">
-            <button id="loginBtn">Login</button>
-            <p class="error" id="errorMsg" style="display: none;">Username or Password Invalid</p>
-        </div>
-    </div> -->
-
+  <body>
     <header>
-        <h1>Seismo<span>Track</span></h1>
+      <h1>Seismo<span>Track</span></h1>
     </header>
 
     <main>
-        <nav>
-            <ul>
-                <li><a id="home" class="active" href="#">Home</a></li>
-                <li><a id="graph" href="#">Graph</a></li>
-                <li><a id="location" href="#">Location</a></li>
-                <li><a id="history" href="#">Recap</a></li>
-                <li><a id="safety" href="#">Safety Tips</a></li>
-                <!--   <h1 id="welcomeMsg"></h1>-->
-            </ul>
-        </nav>
+      <nav>
+        <ul>
+          <li><a id="home" class="active" href="#">Home</a></li>
+          <li><a id="graph" href="#">Graph</a></li>
+          <li><a id="history" href="#">Recap</a></li>
+          <li><a id="safety" href="#">Safety Tips</a></li>
+        </ul>
+      </nav>
 
-        <div class="content">
-            <!-- Home content -->
-            <div class="home-content">
-                <h2>Selamat Datang Di Earthquake Detector</h2>
-                <p>Website ini menyediakan informasi real-time mengenai aktivitas seismik yangg terdeteksi oleh alat
-                    kami.</p>
-
-                <div class="datetime-box">
-                    <h2 id="monthYear"></h2>
-                    <h3 id="day"></h3>
-                    <div id="time" class="clock"></div>
-
-                    <div class="data-grid">
-                        <div class="data-card">
-                            <img src="https://img.icons8.com/ios/50/000000/partly-cloudy-day--v1.png" alt="temperature">
-                            <h4>Temperature</h4>
-                            <span>30°C</span>
-                        </div>
-
-                        <div class="data-card">
-                            <img src="https://img.icons8.com/ios/50/000000/hygrometer.png" alt="humidity">
-                            <h4>Humidity</h4>
-                            <span>100%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="news-carousel">
-                    <div class="news-track">
-                        <div class="news-item">🌍 Selamat Datang Di Earthquake Detector</div>
-                        <div class="news-item">⚠️ Website ini menyediakan informasi real-time mengenai aktivitas seismik
-                            yangg terdeteksi oleh alat
-                            kami</div>
-                        <div class="news-item">📊 Data sensor terbaru menunjukkan aktivitas meningkat.</div>
-                        <div class="news-item">🔔 Waspadai gempa susulan dalam 24 jam ke depan.</div>
-                    </div>
-                </div>
-
-                <div id="slider">
-                    <input type="radio" name="slider" id="slide1" checked>
-                    <input type="radio" name="slider" id="slide2">
-                    <input type="radio" name="slider" id="slide3">
-                    <input type="radio" name="slider" id="slide4">
-                    <div id="slides">
-                        <div id="overflow">
-                            <div class="inner">
-                                <div class="slide slide_1">
-                                    <div class="slide-content">
-                                        <a
-                                            href="https://www.bmkg.go.id/berita/utama/belajar-dari-cuaca-ekstrem-bmkg-soroti-tantangan-dan-solusi-mitigasi-bencana">
-
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="slide slide_2">
-                                    <div class="slide-content">
-
-                                    </div>
-                                </div>
-                                <div class="slide slide_3">
-                                    <div class="slide-content">
-
-                                    </div>
-                                </div>
-                                <div class="slide slide_4">
-                                    <div class="slide-content">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="controls">
-                        <label for="slide1"></label>
-                        <label for="slide2"></label>
-                        <label for="slide3"></label>
-                        <label for="slide4"></label>
-                    </div>
-                    <div id="bullets">
-                        <label for="slide1"></label>
-                        <label for="slide2"></label>
-                        <label for="slide3"></label>
-                        <label for="slide4"></label>
-                    </div>
-                </div>
+      <div class="content">
+        <!-- Home content -->
+        <div class="home-content">
+          <div class="datetime-box">
+            <div class="date">
+              <h2 id="monthYear"></h2>
+              <h3 id="day"></h3>
+              <div id="time" class="clock"></div>
             </div>
-            <!-- Home content end -->
 
-            <!-- Graph content -->
-            <div class="graph-content hide">
-                <h2>Grafik Data Sensor Getaran Real-Time</h2>
-                <canvas id="chart1"></canvas>
-
-                <h2>Grafik Data Sensor Suhu Real-Time</h2>
-                <canvas id="chart2"></canvas>
-
-                <h2>Grafik Data Sensor Kelembapan Real-Time</h2>
-                <canvas id="chart3"></canvas>
-            </div>
-            <!-- Graph content end -->
-
-            <!-- Location content -->
-            <div class="location-content hide">
-                <h2>Your Location</h1>
-                    <!-- <p id="location-text"></p> -->
-                    <p id="info">Getting your location...</p>
-                    <button id="checkLocation">Check Your Location</button>
-                    <div id="map"></div>
-            </div>
-            <!-- Location content end -->
-
-            <!-- History -->
-            <div class="historical-content hide">
-                <h2>Recap Data</h2>
-                <p>Riwayat Data Gempa Yang Telah Terkumpul</p>
-                <div class="rekap-content">
-                    <input type="date" id="rekapDate">
-                    <button id="btnDownloadRekap" class="btn-download">
-                        <p>Download Rekap PDF</p>
-                    </button>
+            <div>
+              <h1>Selamat Datang Di Earthquake Detector</h1>
+              <p>
+                Website ini menyediakan informasi real-time mengenai aktivitas
+                seismik yangg terdeteksi oleh alat kami.
+              </p>
+              <div class="card-stats">
+                <div class="item-card">
+                  <h3>Jumlah Gempa (24 Jam Terakhir)</h3>
+                  <p style="font-size: 1.5em; font-weight: bold">
+                    12 Guncangan
+                  </p>
                 </div>
-
-                <!-- Tempat tampilkan data -->
-                <div class="rekap-table-container">
-                    <table id="rekapTable">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Waktu</th>
-                                <th>Suhu (°C)</th>
-                                <th>Kelembapan (%)</th>
-                                <th>Akselerasi (X,Y,Z)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Data dari server akan ditambahkan di sini -->
-                        </tbody>
-                    </table>
+                <div class="item-card">
+                  <h3>Jumlah Gempa (24 Jam Terakhir)</h3>
+                  <p style="font-size: 1.5em; font-weight: bold">
+                    12 Guncangan
+                  </p>
                 </div>
-
+                <div class="item-card">
+                  <h3>Jumlah Gempa (24 Jam Terakhir)</h3>
+                  <p style="font-size: 1.5em; font-weight: bold">
+                    12 Guncangan
+                  </p>
+                </div>
+              </div>
             </div>
-            <!-- History end -->
 
-            <!-- Safety Tips -->
-            <div class="safety-content hide">
-                <h2>Safety Tips</h2>
-                <p>Berikut adalah beberapa tips keselamatan yang penting saat terjadi gempa bumi:</p>
-                <div class="item-tips">
-                    <div class="item">Berlindung di tempat aman: Segera berlindung di bawah meja yang kokoh atau perabot
-                        lain untuk melindungi diri dari benda jatuh.</div>
-                    <div class="item">Jauhi jendela dan benda berat: Hindari berada di dekat kaca, lemari, atau benda
-                        yang bisa jatuh dan melukai.</div>
-                    <div class="item">Jangan panik: Tetap tenang dan ikuti prosedur evakuasi jika diperlukan.</div>
-                    <div class="item">Matikan listrik dan gas: Jika memungkinkan, matikan sumber listrik dan gas untuk
-                        mencegah kebakaran.</div>
-                    <div class="item">Setelah gempa: Periksa kondisi diri dan orang sekitar, serta cari informasi dari
-                        sumber resmi terkait potensi gempa susulan.</div>
-                </div>
+            <div class="data-grid">
+              <div class="data-card">
+                <img
+                  src="https://img.icons8.com/ios/50/000000/partly-cloudy-day--v1.png"
+                  alt="temperature"
+                />
+                <h4>Temperature</h4>
+                <span>30°C</span>
+              </div>
 
-
-                <div class="news">
-                    <h2>News</h2>
-                    <div class="news-item">
-                        <a href="https://umj.ac.id/opini-1/ahli-k3-umj-bagikan-tips-penyelamatan-diri-saat-gempa-bumi/">
-                            <h3>Universitas Muhammadiyah Jakarta:</h3>
-                            <p>Ahli K3 UMJ Bagikan Tips Penyelamatan Diri Saat Gempa Bumi</p>
-                        </a>
-
-                        <a
-                            href="https://baznas.go.id/artikel-show/Tips-Penting-untuk-Melindungi-Diri-dari-Ancaman-Gempa-Megathrust/602">
-                            <h3>BAZNAS:</h3>
-                            <p>Tips Penting untuk Melindungi Diri dari Ancaman Gempa Megathrust</p>
-                        </a>
-
-                        <a
-                            href="https://www.tempo.co/arsip/apa-yang-harus-dilakukan-ketika-berkendara-dan-mendadak-ada-gempa--14453">
-                            <h3>Tempo:</h3>
-                            <p>Apa yang Harus Dilakukan Ketika Berkendara dan Mendadak Ada Gempa?</p>
-                        </a>
-
-                    </div>
-                </div>
-                <!-- Safety Tips end -->
-
-
+              <div class="data-card">
+                <img
+                  src="https://img.icons8.com/ios/50/000000/hygrometer.png"
+                  alt="humidity"
+                />
+                <h4>Humidity</h4>
+                <span>100%</span>
+              </div>
             </div>
+          </div>
+
+          <div class="info-header">
+            <h2>
+              Peta Sebaran Gempa Global (M 2.5+ Seminggu Terakhir) - Sumber:
+              USGS
+            </h2>
+          </div>
+          <div id="map"></div>
+
+          <div class="rekap-gempa">
+            <h2>Rekap Gempa Dunia</h2>
+
+            <div class="hero-rekap">
+              <div class="hero-item">
+                <h3>Rekap Gempa Terakhir</h3>
+                <div class="rekap-item">
+                  <span class="rekap-label">Jumlah Gempa:</span>
+                  <span class="rekap-value">12 Guncangan</span>
+                </div>
+                <div class="rekap-item">
+                  <span class="rekap-label">Gempa Terkuat:</span>
+                  <span class="rekap-value">M 5.6</span>
+                </div>
+                <div class="rekap-item">
+                  <span class="rekap-label">Lokasi:</span>
+                  <span class="rekap-value">Jakarta, Indonesia</span>
+                </div>
+              </div>
+
+              <div class="hero-item">
+                <h3>Ringkasan Aktivitas 24 Jam Terakhir</h3>
+                <div class="rekap-item">
+                  <span class="rekap-label">Jumlah Guncangan:</span>
+                  <span class="rekap-value">7 Guncangan</span>
+                </div>
+                <div class="rekap-item">
+                  <span class="rekap-label">Magnitudo Tertinggi:</span>
+                  <span class="rekap-value">M 5.6</span>
+                </div>
+                <div class="rekap-item">
+                  <span class="rekap-label">Terakhir Update:</span>
+                  <span class="rekap-value">10 Detik Lalu</span>
+                </div>
+              </div>
+
+              <div class="hero-item">
+                <h3>Daftar Gempa Terbaru</h3>
+                <div class="rekap-item">
+                  <span class="rekap-label">1. 5.8 M</span>
+                  <span class="rekap-value">120 km Barat Daya Bengkulu</span>
+                </div>
+                <div class="rekap-item">
+                  <span class="rekap-label">2. 5.6 M</span>
+                  <span class="rekap-value">100 km Barat Daya Jakarta</span>
+                </div>
+                <div class="rekap-item">
+                  <span class="rekap-label">3. 4.2 M</span>
+                  <span class="rekap-value">50 km Timur Laut Sukabumi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Home content end -->
+
+        <!-- Graph content -->
+        <div class="graph-content">
+          <h2>Grafik Data Sensor Getaran Real-Time</h2>
+          <canvas id="chart1"></canvas>
+
+          <h2>Grafik Data Sensor Suhu Real-Time</h2>
+          <canvas id="chart2"></canvas>
+
+          <h2>Grafik Data Sensor Kelembapan Real-Time</h2>
+          <canvas id="chart3"></canvas>
+        </div>
+        <!-- Graph content end -->
+
+        <!-- History -->
+        <div class="historical-content">
+          <h2>Recap Data</h2>
+          <p>Riwayat Data Gempa Yang Telah Terkumpul</p>
+          <div class="rekap-content">
+            <input type="date" id="rekapDate" />
+            <button id="btnDownloadRekap" class="btn-download">
+              <p>Download Rekap PDF</p>
+            </button>
+          </div>
+
+          <!-- Tempat tampilkan data -->
+          <div class="rekap-table-container">
+            <table id="rekapTable">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Waktu</th>
+                  <th>Suhu (°C)</th>
+                  <th>Kelembapan (%)</th>
+                  <th>Akselerasi (X,Y,Z)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Data dari server akan ditambahkan di sini -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- History end -->
+
+        <!-- Safety Tips -->
+        <div class="safety-content">
+          <h2>Safety Tips</h2>
+          <p>
+            Berikut adalah beberapa tips keselamatan yang penting saat terjadi
+            gempa bumi:
+          </p>
+          <div class="item-tips">
+            <div class="item">
+              Berlindung di tempat aman: Segera berlindung di bawah meja yang
+              kokoh atau perabot lain untuk melindungi diri dari benda jatuh.
+            </div>
+            <div class="item">
+              Jauhi jendela dan benda berat: Hindari berada di dekat kaca,
+              lemari, atau benda yang bisa jatuh dan melukai.
+            </div>
+            <div class="item">
+              Jangan panik: Tetap tenang dan ikuti prosedur evakuasi jika
+              diperlukan.
+            </div>
+            <div class="item">
+              Matikan listrik dan gas: Jika memungkinkan, matikan sumber listrik
+              dan gas untuk mencegah kebakaran.
+            </div>
+            <div class="item">
+              Setelah gempa: Periksa kondisi diri dan orang sekitar, serta cari
+              informasi dari sumber resmi terkait potensi gempa susulan.
+            </div>
+          </div>
+
+          <div class="news">
+            <h2>News</h2>
+            <div class="news-item">
+              <a
+                href="https://umj.ac.id/opini-1/ahli-k3-umj-bagikan-tips-penyelamatan-diri-saat-gempa-bumi/"
+              >
+                <h3>Universitas Muhammadiyah Jakarta:</h3>
+                <p>
+                  Ahli K3 UMJ Bagikan Tips Penyelamatan Diri Saat Gempa Bumi
+                </p>
+              </a>
+
+              <a
+                href="https://baznas.go.id/artikel-show/Tips-Penting-untuk-Melindungi-Diri-dari-Ancaman-Gempa-Megathrust/602"
+              >
+                <h3>BAZNAS:</h3>
+                <p>
+                  Tips Penting untuk Melindungi Diri dari Ancaman Gempa
+                  Megathrust
+                </p>
+              </a>
+
+              <a
+                href="https://www.tempo.co/arsip/apa-yang-harus-dilakukan-ketika-berkendara-dan-mendadak-ada-gempa--14453"
+              >
+                <h3>Tempo:</h3>
+                <p>
+                  Apa yang Harus Dilakukan Ketika Berkendara dan Mendadak Ada
+                  Gempa?
+                </p>
+              </a>
+            </div>
+          </div>
+          <!-- Safety Tips end -->
+        </div>
+      </div>
     </main>
 
     <script src="script/script.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAV0QLkwkneaAyn9ViWacTXH9Z3y4L2r1k&callback=initMap"
-        async defer></script>
-</body>
-
+  </body>
 </html>

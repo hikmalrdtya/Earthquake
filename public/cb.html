@@ -1,211 +1,120 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
-    <title>SeismoTrack</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peta Gempa Real-time Global (Dark Mode)</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
     <style>
-        * {
+        body {
+            font-family: sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
-            box-sizing: border-box;
+            background-color: #1a1a1a; /* Background gelap untuk seluruh halaman */
+            color: #f0f0f0; /* Warna teks terang */
         }
-
-        body {
-            background: #f6f8fc;
-            color: #222;
-        }
-
-        header {
-            background-image: url('bg-header.jpg');
-            background-size: cover;
-            background-position: center;
-            padding: 20px;
-            text-align: center;
-            color: white;
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 20px 0;
-        }
-
-        nav a {
-            text-decoration: none;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 999px;
-            color: #000;
-            background-color: transparent;
-            transition: all 0.3s;
-        }
-
-        nav a.active,
-        nav a:hover {
-            background-color: #111;
-            color: white;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        .welcome {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .datetime-box {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .datetime-box h2 {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .datetime-box h3 {
-            font-weight: 400;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .clock {
-            font-size: 48px;
-            font-weight: bold;
-            color: #111;
-        }
-
-        .data-grid {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .data-card {
-            background: white;
-            width: 200px;
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        }
-
-        .data-card img {
-            width: 50px;
-            margin-bottom: 10px;
-        }
-
-        .data-card h4 {
-            font-size: 18px;
-            margin-bottom: 6px;
-        }
-
-        .data-card span {
-            font-size: 16px;
-            color: #333;
-        }
-
-        .news-carousel {
-            overflow: hidden;
+        #map {
+            height: 100vh;
             width: 100%;
-            background-color: #222;
-            color: white;
-            padding: 10px 0;
-            position: relative;
-            font-family: 'Segoe UI', sans-serif;
+            border-top: 1px solid #333;
         }
-
-        .news-track {
-            display: flex;
-            animation: scrollNews 20s linear infinite;
-            gap: 50px;
-        }
-
-        .news-item {
-            min-width: max-content;
-            font-size: 16px;
-            white-space: nowrap;
-        }
-
-        @keyframes scrollNews {
-            0% {
-                transform: translateX(100%);
-            }
-
-            100% {
-                transform: translateX(-100%);
-            }
+        .info-header {
+            text-align: center;
+            padding: 10px;
         }
     </style>
 </head>
-
 <body>
 
-    <header>
-        <h1>Seismo<span style="color: #4db5ff;">Track</span></h1>
-    </header>
-
-    <nav>
-        <a class="active" href="#">Home</a>
-        <a href="#">Graph</a>
-        <a href="#">Location</a>
-        <a href="#">Recap</a>
-        <a href="#">Safety Tips</a>
-        <a href="#">Settings</a>
-    </nav>
-
-    <div class="container">
-        <div class="welcome">
-            <h2>Selamat Datang Di Earthquake Detector</h2>
-            <p>Website ini menyediakan informasi real-time mengenai aktivitas seismik yang terdeteksi oleh alat kami.
-            </p>
-        </div>
-
-        <div class="datetime-box">
-            <h2>April 2025</h2>
-            <h3>Minggu, 13</h3>
-            <div class="clock">12:44:10</div>
-
-            <div class="data-grid">
-                <div class="data-card">
-                    <img src="https://img.icons8.com/ios/50/000000/partly-cloudy-day--v1.png" alt="temperature">
-                    <h4>Temperature</h4>
-                    <span>30°C</span>
-                </div>
-
-                <div class="data-card">
-                    <img src="https://img.icons8.com/ios/50/000000/hygrometer.png" alt="humidity">
-                    <h4>Humidity</h4>
-                    <span>100%</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="news-carousel">
-            <div class="news-track">
-                <div class="news-item">🌍 Gempa bumi terjadi di wilayah timur Indonesia hari ini.</div>
-                <div class="news-item">⚠️ Peringatan dini tsunami dikeluarkan oleh BMKG.</div>
-                <div class="news-item">📊 Data sensor terbaru menunjukkan aktivitas meningkat.</div>
-                <div class="news-item">🔔 Waspadai gempa susulan dalam 24 jam ke depan.</div>
-            </div>
-        </div>
-
+    <div class="info-header">
+        <h1>Peta Sebaran Gempa Global (M 2.5+ Seminggu Terakhir) - Sumber: USGS</h1>
     </div>
 
-</body>
+    <div id="map"></div>
 
-</html>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+    <script>
+        // Inisialisasi Peta
+        // Titik tengah tetap di Indonesia, namun zoom diperkecil untuk tampilan global
+        const map = L.map('map').setView([-2.5489, 118.0149], 4);
+
+        // --- PERUBAHAN 1: MENGGANTI TILE LAYER MENJADI TEMA GELAP ---
+        // Menggunakan tile layer dari CartoDB (tema Positron) yang gelap dan gratis
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
+        
+        // --- PERUBAHAN 2: MENGGANTI URL API KE USGS ---
+        // API USGS untuk gempa magnitudo 2.5+ dalam 7 hari terakhir
+        const usgsApiUrl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson';
+
+        // Fungsi untuk menentukan warna marker berdasarkan magnitudo (tidak berubah)
+        function getMarkerColor(magnitude) {
+            if (magnitude < 4.0) {
+                return '#64B5F6'; // Biru muda
+            } else if (magnitude < 6.0) {
+                return '#FFD54F'; // Kuning
+            } else {
+                return '#E57373'; // Merah
+            }
+        }
+
+        // Mengambil data gempa menggunakan Fetch API
+        fetch(usgsApiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // --- PERUBAHAN 3: MENYESUAIKAN STRUKTUR DATA USGS ---
+                // Data gempa USGS ada di dalam array 'features'
+                const gempaList = data.features;
+                console.log("Data berhasil diambil dari USGS:", gempaList);
+
+                gempaList.forEach(gempa => {
+                    // Ekstrak informasi dari struktur GeoJSON USGS
+                    const props = gempa.properties; // properties berisi semua detail
+                    const coords = gempa.geometry.coordinates; // geometry berisi koordinat
+
+                    const lon = coords[0];
+                    const lat = coords[1];
+                    const depth = coords[2];
+                    const magnitude = props.mag;
+                    const region = props.place;
+                    
+                    // Waktu dalam format timestamp, perlu diubah agar mudah dibaca
+                    const time = new Date(props.time).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+
+                    // Membuat konten untuk popup
+                    const popupContent = `
+                        <b>${region}</b><br>
+                        Magnitudo: ${magnitude} M<br>
+                        Kedalaman: ${depth.toFixed(2)} km<br>
+                        Waktu: ${time} WIB
+                    `;
+                    
+                    // Membuat marker lingkaran (CircleMarker)
+                    // Radius diatur agar tidak terlalu besar untuk data global
+                    L.circleMarker([lat, lon], {
+                        radius: magnitude * 1.5,
+                        color: getMarkerColor(magnitude),
+                        fillColor: getMarkerColor(magnitude),
+                        fillOpacity: 0.8
+                    })
+                    .addTo(map)
+                    .bindPopup(popupContent);
+                });
+            })
+            .catch(error => {
+                console.error('Gagal mengambil data gempa dari USGS:', error);
+                document.getElementById('map').innerHTML = '<h2 style="text-align:center; color: #f0f0f0;">Gagal memuat data gempa. Coba lagi nanti.</h2>';
+            });
+    </script>
+</body>
+</html> 
